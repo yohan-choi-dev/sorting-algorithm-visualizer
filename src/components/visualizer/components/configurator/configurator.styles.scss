@@ -1,0 +1,11 @@
+.configurator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.configurator-panel {
+    transition: all 0.5s;
+}
