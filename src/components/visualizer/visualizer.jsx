@@ -39,7 +39,7 @@ function Visualizer() {
     const manipulateController = (name) => {
         try {
             if (!config.sortingAlgorithm) {
-                throw new Error('Sorting algorithm is not selected! \n Please, select sorting algorithm!');
+                throw new Error('Sorting algorithm is not selected!');
             }
 
             if (!animation) {
