@@ -50,7 +50,7 @@ function Configurator({ onClick, onInput }) {
                     </Slider>
                 </div>
             </div>
-            <Button className='btn btn-icon' name='fold' onClick={handleOnClick}>
+            <Button className='button icon' name='fold' onClick={handleOnClick}>
                 <FoldIcon />
             </Button>
         </div>

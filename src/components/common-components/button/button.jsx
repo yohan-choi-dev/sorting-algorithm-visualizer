@@ -9,7 +9,7 @@ function Button({ name, className, children, onClick }) {
 }
 
 Button.defaultProps = {
-    className: 'btn btn-full',
+    className: 'button full',
 };
 
 export default Button;

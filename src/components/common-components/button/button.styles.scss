@@ -1,4 +1,4 @@
-.btn {
+.button {
     display: block;
     font-weight: 300;
     font-size: 1rem;
@@ -6,8 +6,8 @@
     clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
 }
 
-.btn:link,
-.btn:visited {
+.button:link,
+.button:visited {
     color: var(--white);
     text-decoration: none;
     text-transform: uppercase;
@@ -16,18 +16,18 @@
     transition: all 0.5s;
 }
 
-.btn:hover,
-.btn:active {
+.button:hover,
+.button:active {
     background-position: 100%;
     color: #448aff;
     transform: scale(1.2);
 }
 
-.btn-full {
+.full {
     width: 20rem;
 }
 
-.btn-icon {
+.icon {
     width: 5rem;
     font-size: 2rem;
 }
