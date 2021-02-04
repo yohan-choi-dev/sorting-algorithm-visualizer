@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/* Basic Setup */
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background-color: var(--primary-color);
+    color: white;
+    font-family: 'Lato', 'Arial', 'sans-serif';
+    // font-family: 'Press Start 2P', cursive;
+    font-weight: 300;
+    font-size: 1.2rem; /* 1rem = 20px = 16px * 1.25 */
+    text-rendering: optimizeLegibility;
+    -webkit-user-select: none; /* Chrome all / Safari all */
+    -moz-user-select: none; /* Firefox all */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none;
+    background-color: black;
+}
+
+a:link,
+:visited {
+    text-decoration: none;
+    color: white;
+}
