@@ -1,4 +1,4 @@
-import { swap } from './algorithmh-helpers';
+import { swap } from './algorithm-helpers';
 import { Colors } from '../../enums';
 
 export default function mergerSortWrapper(array, animation) {
