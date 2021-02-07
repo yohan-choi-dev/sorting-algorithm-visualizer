@@ -1,5 +1,5 @@
-export { default as bubbleSort } from './bubbleSort';
-export { default as insertionSort } from './insertionSort';
-export { default as mergeSort } from './mergeSort';
-export { default as quickSort } from './quickSort';
-export { default as selectionSort } from './selectionSort';
+export { default as bubbleSort } from './bubble-sort';
+export { default as insertionSort } from './insertion-sort';
+export { default as mergeSort } from './merge-sort';
+export { default as quickSort } from './quick-sort';
+export { default as selectionSort } from './selection-sort';
