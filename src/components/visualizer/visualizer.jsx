@@ -9,34 +9,45 @@ import { Keys } from './enums';
 import { sortingAlgorithms, Animation } from './utils/';
 import { delay, getRandomArray } from '../../utils';
 
-import { Configurator, MainController, SubController, Display, ItemList } from './components/';
+import { Configurator, SubController, Display, ItemList } from './components/';
 
-const ALGORITHM_EVENTS = Object.freeze(['bubbleSort', 'selectionSort', 'insertionSort', 'mergeSort', 'quickSort']);
-
-const CONTROLLER_EVENTS = Object.freeze(['play', 'backward', 'forward', 'reset', 'pause']);
+const ALGORITHM_EVENTS = Object.freeze([
+    'bubbleSort',
+    'selectionSort',
+    'insertionSort',
+    'mergeSort',
+    'quickSort',
+]);
+const CONTROLLER_EVENTS = Object.freeze(['play', 'backward', 'forward', 'pause', 'reset']);
 
 function Visualizer() {
     const [array, setArray] = useState([]);
     const [config, setConfig] = useState(defaultConfig);
-
     let animation = null;
 
-    const initAnimation = () => {
+    useEffect(() => {
+        setArray(getRandomArray(25, 1, 300));
+    }, []);
+
+    useEventListner('keydown', handleKeyDown);
+
+    async function initAnimation() {
         if (animation) return;
         const bars = document.getElementsByClassName('bar');
         animation = new Animation(bars, config);
-        config.sortingAlgorithm(array, animation);
-    };
+        const clonedArray = [...array];
+        config.sortingAlgorithm(clonedArray, animation);
+    }
 
-    const reset = async () => {
+    async function reset() {
         if (animation) {
             animation.pause();
             await delay(config.animationSpeed);
         }
         setArray(getRandomArray(array.length, 1, 300));
-    };
+    }
 
-    const manipulateController = (name) => {
+    function manipulateController(name) {
         try {
             if (!config.sortingAlgorithm) {
                 throw new Error('Sorting algorithm is not selected!');
@@ -58,27 +69,24 @@ function Visualizer() {
                 controller[name]();
             }
         } catch (error) {
-            alert(error);
+            alert(`Algorithm is not selected! Please, select algorithm. `);
         }
-    };
+    }
 
-    const selectAlgorithm = async (name) => {
+    async function selectAlgorithm(name) {
         await reset();
+
         if (sortingAlgorithms[name]) {
             setConfig((previous) => setConfig({ ...previous, sortingAlgorithm: sortingAlgorithms[name] }));
         }
-    };
+    }
 
-    useEffect(() => setArray(getRandomArray(25, 1, 300)), []);
-
-    const handleInput = async ({ target: { name, value } }) => {
-        delay(300);
-
+    function handleInput({ target: { name, value } }) {
         switch (name) {
             case 'array':
                 if (value > array.length + 10 || value < array.length - 10) {
                     if (animation) animation.pause();
-                    setArray(getRandomArray(value, 1, 300));
+                    if (array.length != value) setArray(getRandomArray(value, 1, 300));
                 }
                 break;
             case 'animationSpeed':
@@ -91,9 +99,9 @@ function Visualizer() {
             default:
                 break;
         }
-    };
+    }
 
-    const handleClick = (event) => {
+    function handleClick(event) {
         event.preventDefault();
         const { name } = event.currentTarget;
         if (ALGORITHM_EVENTS.includes(name)) {
@@ -101,9 +109,9 @@ function Visualizer() {
         } else if (CONTROLLER_EVENTS.includes(name)) {
             manipulateController(name);
         }
-    };
+    }
 
-    const handleKeyDown = ({ keyCode }) => {
+    function handleKeyDown({ keyCode }) {
         switch (keyCode) {
             case Keys.SPACEBAR:
                 manipulateController('play');
@@ -117,18 +125,15 @@ function Visualizer() {
             default:
                 break;
         }
-    };
-
-    useEventListner('keydown', handleKeyDown);
+    }
 
     return (
         <div className='visualizer'>
-            <Configurator onClick={handleClick} onInput={handleInput} />
-            <MainController animation={animation} onClick={handleClick} />
             <Display>
                 <SubController onClick={handleClick} />
                 <ItemList list={array} />
             </Display>
+            <Configurator onClick={handleClick} onInput={handleInput} />
         </div>
     );
 }
