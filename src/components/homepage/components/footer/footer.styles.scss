@@ -1,7 +1,18 @@
-.footer {
-    height: 40px;
-}
+@use '../../../../styles/abstracts/mixins' as *;
 
-.footer__text {
-    text-align: center;
+.footer {
+    display: flexbox;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+
+    &__text {
+        font-size: 0.8rem;
+        text-align: center;
+    }
+
+    @include respond(mobile-medium) {
+        font-size: 0.5rem;
+    }
 }
