@@ -1,5 +1,5 @@
 export { Bar } from './bar';
-export { PlayPauseButton } from './play-pause-button';
+export { ToggleButton } from './toggle-button';
 export { Display } from './display';
 export { ItemList } from './item-list';
 export { Configurator } from './configurator';
