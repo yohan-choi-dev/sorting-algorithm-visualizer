@@ -10,9 +10,7 @@ function Homepage() {
             <Main>
                 <Visualizer></Visualizer>
             </Main>
-            <Footer>
-                <p>&copy; 2021 by Yohan Choi. All rights reserved.</p>
-            </Footer>
+            <Footer>&copy; 2021 by Yohan Choi. All rights reserved.</Footer>
         </div>
     );
 }
