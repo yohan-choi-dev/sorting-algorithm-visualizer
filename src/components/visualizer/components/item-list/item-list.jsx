@@ -1,5 +1,3 @@
-import './item-list.styles.scss';
-
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 
@@ -10,9 +8,9 @@ function ItemList({ list }) {
         const numberOfItems = list.length;
         return list.map((value) => {
             const style = {
-                height: value + 80 + 'px',
-                width: 95 / numberOfItems + 'vw',
-                fontSize: numberOfItems < 50 ? (100 / numberOfItems) * 0.5 + 'vw' : 0,
+                height: (value / 300) * 80 + '%',
+                width: 99 / numberOfItems + 'vw',
+                fontSize: numberOfItems < 50 ? (100 / numberOfItems) * 0.2 + 'vw' : 0,
             };
 
             return (
