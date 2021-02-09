@@ -2,13 +2,13 @@ import './slider.styles.scss';
 
 import PropTypes from 'prop-types';
 
-function Slider({ id, name, min, max, onInput, children }) {
+function Slider({ id, name, min, max, title, onInput, children }) {
     return (
         <div className='slider'>
             <label htmlFor={id} className='slider__label'>
-                {children}
+                <p>{children}</p>
             </label>
-            <input id={id} className='slider__input' type='range' name={name} min={min} max={max} onInput={onInput} />
+            <input id={id} className='slider__input' type='range' name={name} min={min} max={max} title={title} onInput={onInput} />
         </div>
     );
 }
