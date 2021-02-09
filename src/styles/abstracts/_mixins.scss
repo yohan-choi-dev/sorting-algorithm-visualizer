@@ -1,0 +1,51 @@
+@use './variables' as *;
+
+@mixin respond($breakpoint) {
+    @if $breakpoint == desktop-4k {
+        @media only screen and (max-width: $bp-desktop-4k) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == desktop-fhd {
+        @media only screen and (max-width: $bp-desktop-fhd) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == desktop-hd {
+        @media only screen and (max-width: $bp-desktop-hd) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == mobile-largest {
+        @media only screen and (max-width: $bp-mobile-largest) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == mobile-large {
+        @media only screen and (max-width: $bp-mobile-large) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == mobile-medium {
+        @media only screen and (max-width: $bp-mobile-medium) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == mobile-small {
+        @media only screen and (max-width: $bp-mobile-small) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == mobile-smallest {
+        @media only screen and (max-width: $bp-mobile-smallest) {
+            @content;
+        }
+    }
+}

@@ -1,0 +1,61 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 100%; /* 1rem = 16px */
+    @include respond(desktop-4k) {
+        font-size: 150%; /* 1rem = 24px */
+    }
+
+    @include respond(desktop-fhd) {
+        font-size: 125%; /* 1rem = 20px */
+    }
+
+    @include respond(desktop-hd) {
+        font-size: 75%; /* 1rem = 12px */
+    }
+    //  device < 64rem = 1024px
+    // iPad Pro
+    @include respond(mobile-largest) {
+        font-size: 125%; /* 1rem = 20px */
+    }
+
+    // device < 48rem = 768px
+    //  iPad/Mini
+    @include respond(mobile-large) {
+        font-size: 100%; /* 1rem = 16px */
+    }
+
+    // device < 34rem = 544px
+    // iPhone 6p/7p/8p, pixel 2, Surface Duo
+    @include respond(mobile-medium) {
+        font-size: 100%; /* 1rem = 12px */
+    }
+
+    // device < 24rem = 384px
+    // iPhone 6/7/8/X, Galaxy S5
+    @include respond(mobile-small) {
+        font-size: 90%; /* 1rem = 20px */
+    }
+
+    // device < 20rem = 320px
+    // Galaxy Fold
+    @include respond(mobile-smallest) {
+        font-size: 75%; /* 1rem = 20px */
+    }
+}
+
+body {
+    box-sizing: border-box;
+    background-color: $color-black;
+}

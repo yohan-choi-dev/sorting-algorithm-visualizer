@@ -1,0 +1,97 @@
+@keyframes scale-out {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes bounce-from-up {
+    0% {
+        transform: translateY(-2.7rem) scale(1);
+    }
+    16% {
+        transform: translateY(2.3rem) scale(1);
+    }
+    33% {
+        transform: translateY(-1.8rem) scale(1);
+    }
+    38% {
+        transform: translateX(0.3rem);
+    }
+    49% {
+        transform: translateY(1rem) scale(1);
+    }
+
+    68% {
+        transform: translateY(-0.8rem) scale(1);
+    }
+    75% {
+        transform: translateY(0.3rem) scale(1);
+    }
+    100% {
+        transform: translate(0) scale(1);
+    }
+}
+
+@keyframes bounce-from-down {
+    0% {
+        transform: translate(0) scale(1);
+    }
+    16% {
+        transform: translateY(2.3rem) scale(1);
+    }
+    33% {
+        transform: translateY(-1.9rem) scale(1);
+    }
+    49% {
+        transform: translateY(1.8rem) scale(1);
+    }
+    68% {
+        transform: translateY(-1rem) scale(1);
+    }
+    75% {
+        transform: translateY(0.3rem) scale(1);
+    }
+    83% {
+        transform: translateY(-0.2rem) scale(1);
+    }
+    92% {
+        transform: translateY(0.15rem) scale(1);
+    }
+    100% {
+        transform: translate(0) scale(1);
+    }
+}
+
+@keyframes color-animation {
+    0% {
+        background-color: rgba(255, 0, 0, 0.1);
+    }
+    12.5% {
+        background-color: rgba(255, 123, 0, 0.1);
+    }
+    25% {
+        background-color: rgba(255, 255, 0, 0.1);
+    }
+    37.5% {
+        background-color: rgba(255, 255, 123, 0.1);
+    }
+    50% {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    62.5% {
+        background-color: rgba(255, 255, 123, 0.1);
+    }
+    75% {
+        background-color: rgba(255, 255, 0, 0.1);
+    }
+    87.5% {
+        background-color: rgba(255, 123, 0, 0.1);
+    }
+    100% {
+        background-color: rgba(255, 0, 0, 0.1);
+    }
+}

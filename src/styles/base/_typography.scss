@@ -1,0 +1,63 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    font-weight: 300;
+    color: $color-white;
+    -webkit-user-select: none; /* Chrome all / Safari all */
+    -moz-user-select: none; /* Firefox all */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none;
+}
+
+.heading-primary {
+    font-size: 2rem;
+    text-align: center;
+    text-shadow: 0.4rem 0.4rem gray;
+    white-space: pre-line;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.heading-secondary {
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.heading-tertiary {
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.paragraph {
+    font-size: 1rem;
+}
+
+.title {
+    position: absolute;
+    z-index: 30;
+    top: -15%;
+    width: 20rem;
+    text-align: center;
+
+    animation: bounce-from-up ease-in 2s;
+
+    &-space {
+        margin-bottom: 4rem;
+    }
+
+    @include respond(mobile-medium) {
+        position: static;
+
+        &-space {
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+.sub-title {
+    animation: bounce-from-down 1.6s ease-out 0.32s;
+}
