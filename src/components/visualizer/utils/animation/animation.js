@@ -1,7 +1,6 @@
 import { delay } from '../../../../utils';
 /* 
-Animation 
-
+    Animation 
 
 */
 export default class Animation {
@@ -24,7 +23,7 @@ export default class Animation {
         this.config = config;
         this.frames = [];
         this.framePointer = 0;
-        this.undoQueue = [];
+        this.undoStack = [];
         this.isPlayingAnimation = false;
         this.animation = this.generateAnimation();
 
@@ -54,7 +53,7 @@ export default class Animation {
 
             if (value !== null) {
                 target.innerText = value.toString();
-                target.style.height = value + 80 + 'px';
+                target.style.height = (value / 300) * 80 + '%';
             }
 
             if (color !== null) {
@@ -77,7 +76,7 @@ export default class Animation {
     }
 
     preserveAnimeEffects(effects) {
-        this.undoQueue.push(effects);
+        this.undoStack.push(effects);
     }
 
     revertAnimeEffect(preservedEffects) {
@@ -132,8 +131,8 @@ export default class Animation {
 
     backward() {
         this.pause();
-        if (this.undoQueue.length > 0) {
-            this.revertAnimeEffect(this.undoQueue.pop());
+        if (this.undoStack.length > 0) {
+            this.revertAnimeEffect(this.undoStack.pop());
             this.framePointer--;
         }
     }
