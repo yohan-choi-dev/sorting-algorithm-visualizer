@@ -1,1 +1,1 @@
-export { default as useEventListner } from './useEventListner';
+export { default as useEventListner } from './use-event-listener';
