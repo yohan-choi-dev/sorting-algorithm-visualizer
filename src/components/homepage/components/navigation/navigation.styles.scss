@@ -1,25 +1,27 @@
-@use '../../../../styles/base';
+@use '../../../../styles/abstracts/variables' as *;
+@use '../../../../styles/abstracts/mixins' as *;
 
 .navigation {
     margin-top: 20px;
     margin-bottom: 20px;
     text-align: center;
-    a {
-        display: inline-block;
-        margin-left: 2rem;
-        line-height: 1.3;
-        transition: all 0.5s;
-    }
 
-    a,
-    a:link,
-    a:visited {
+    &__link {
+        display: inline-block;
+        margin: 0 1rem;
+        font-size: 1.25rem;
+        line-height: 1.3;
+        color: $color-white;
         text-decoration: none;
+        transition: all 0.5s;
+        @include respond(mobile-medium) {
+            font-size: 0.75rem;
+        }
     }
 
     a:hover,
     a:active {
-        color: base.$primary-color;
+        color: $color-primary;
         transform: scale(1.1);
     }
 }
