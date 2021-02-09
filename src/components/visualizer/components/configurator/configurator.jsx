@@ -1,58 +1,72 @@
 import './configurator.styles.scss';
 
-import { Button, Slider, FoldIcon } from '../../../common-components/';
+import { useState } from 'react';
+
+import { Button, Slider } from '../../../common-components/';
+
+import { MainController } from '../main-controller';
 
 function Configurator({ onClick, onInput }) {
-    let isDisplay = true;
-    const fold = () => {
-        const configuratorPanel = document.getElementById('configurator-panel');
-        isDisplay = !isDisplay;
-        configuratorPanel.style.display = isDisplay ? 'block' : 'none';
-    };
+    let [isPanelOpen, setPanelStatus] = useState(true);
 
-    const handleOnClick = (event) => {
+    function handleOnClick(event) {
         event.preventDefault();
-        const name = event.currentTarget.name;
-        if (name === 'fold') {
-            fold();
-        } else {
-            onClick(event);
-        }
-    };
+        onClick(event);
+    }
+
+    function togglePanel() {
+        setPanelStatus((previous) => setPanelStatus(!previous));
+    }
 
     return (
         <div className='configurator'>
-            <div id='configurator-panel' className='configurator-panel'>
-                <div>
-                    <h3>Select Algorithm!</h3>
-                    <Button name='bubbleSort' onClick={handleOnClick}>
+            {isPanelOpen && (
+                <div className='configurator__panel'>
+                    <h1 className='heading-primary title'>Sorting Algorithm Visualizer</h1>
+                    <span className='title-space'></span>
+
+                    <h2 className='heading-secondary sub-title'>Select Algorithm!</h2>
+                    <Button name='bubbleSort' title='bubble sort' onClick={handleOnClick}>
                         Bubble Sort
                     </Button>
-                    <Button name='selectionSort' onClick={handleOnClick}>
+                    <Button name='selectionSort' title='selection sort' onClick={handleOnClick}>
                         Selection Sort
                     </Button>
-                    <Button name='insertionSort' onClick={handleOnClick}>
+                    <Button name='insertionSort' title='insertion sort' onClick={handleOnClick}>
                         Insertion Sort
                     </Button>
-                    <Button name='mergeSort' onClick={handleOnClick}>
+                    <Button name='mergeSort' title='merge sort' onClick={handleOnClick}>
                         Merge Sort
                     </Button>
-                    <Button name='quickSort' onClick={handleOnClick}>
+                    <Button name='quickSort' title='quick sort' onClick={handleOnClick}>
                         Quick Sort
                     </Button>
+                    <div>
+                        <Slider
+                            id='arraySize'
+                            name='array'
+                            title='array size'
+                            min={20}
+                            max={400}
+                            onInput={onInput}>
+                            Array Size
+                        </Slider>
+                        <Slider
+                            id='animationSpeed'
+                            name='animationSpeed'
+                            title='animation speed'
+                            min={1}
+                            max={100}
+                            onInput={onInput}>
+                            Animation Speed
+                        </Slider>
+                    </div>
+                    <Button className='close-button' name='fold' title='close' onClick={togglePanel}>
+                        close
+                    </Button>
                 </div>
-                <div>
-                    <Slider id='arraySize' name='array' min={20} max={400} onInput={onInput}>
-                        Array Size
-                    </Slider>
-                    <Slider id='animationSpeed' name='animationSpeed' min={1} max={100} onInput={onInput}>
-                        Animation Speed
-                    </Slider>
-                </div>
-            </div>
-            <Button className='button icon' name='fold' onClick={handleOnClick}>
-                <FoldIcon />
-            </Button>
+            )}
+            <MainController togglePanel={togglePanel} onClick={onClick}></MainController>
         </div>
     );
 }

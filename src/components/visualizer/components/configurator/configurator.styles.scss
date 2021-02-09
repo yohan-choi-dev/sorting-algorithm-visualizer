@@ -1,11 +1,41 @@
+@use '../../../../styles/abstracts/variables' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
 .configurator {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-}
 
-.configurator-panel {
-    transition: all 0.5s;
+    &__panel {
+        width: 40%;
+        position: absolute;
+        z-index: 20;
+        bottom: 20%;
+        margin: 0 auto;
+
+        background-color: $color-black-transparent-1;
+        border: 1rem solid $color-gray;
+        box-shadow: 1rem 1rem 0rem $color-black;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        @include respond(mobile-largest) {
+            width: 60%;
+        }
+
+        @include respond(mobile-medium) {
+            width: 100vw;
+            height: 100vh;
+            top: 0%;
+            padding-top: 6rem;
+            background-color: $color-black;
+            border: none;
+            box-shadow: none;
+        }
+    }
 }
