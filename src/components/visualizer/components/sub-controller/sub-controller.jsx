@@ -1,41 +1,41 @@
 import './sub-controller.styles.scss';
 
+import { useState } from 'react';
 import { delay } from '../../../../utils';
 
-import { BackwardIcon, PlayIcon, ForwardIcon } from '../../../common-components/icons';
+import { Button, BackwardIcon, ForwardIcon, PlayIcon } from '../../../common-components/';
 
 function SubController({ onClick }) {
-    const controller = document.getElementById('controller');
-    const subControllerButtons = [...document.getElementsByClassName('sub-controller-button')];
-    let isWorking = false;
-    const handleMouseOver = async () => {
+    const [isWorking, setWorkingStatus] = useState(false);
+    const modifier = isWorking ? 'activated' : 'deactivated';
+    const subConColClassName = 'sub-controller__column';
+    const subConBtnClassName = 'sub-controller-button sub-controller__column--' + modifier;
+
+    async function handleMouseOver() {
         if (!isWorking) {
-            controller.style.color = 'rgba(255,255,255,1)';
-            subControllerButtons.forEach((content) => {
-                content.style.backgroundColor = 'rgba(255,255,255,0.2)';
-                content.style.border = '1px rgba(255, 255, 255, 0.2) solid';
-            });
-            isWorking = true;
-            await delay(3000);
-            controller.style.color = 'rgba(255,255,255,0)';
-            subControllerButtons.forEach((content) => {
-                content.style.backgroundColor = 'rgba(255,255,255,0)';
-                content.style.border = '1px rgba(255, 255, 255, 0) solid';
-            });
-            isWorking = false;
+            setWorkingStatus(true);
+            await delay(100);
+            setWorkingStatus(false);
         }
-    };
+    }
+
     return (
-        <div className='sub-controller' id='controller' onMouseOver={handleMouseOver}>
-            <a className='sub-controller-button' name='backward' onClick={onClick} href='#'>
-                <BackwardIcon />
-            </a>
-            <a className='sub-controller-button' name='play' onClick={onClick} href='#'>
-                <PlayIcon />
-            </a>
-            <a className='sub-controller-button' name='forward' onClick={onClick} href='#'>
-                <ForwardIcon />
-            </a>
+        <div className='sub-controller' onMouseOver={handleMouseOver}>
+            <div className={subConColClassName}>
+                <Button className={subConBtnClassName} name='backward' title='backward' onClick={onClick}>
+                    <BackwardIcon />
+                </Button>
+            </div>
+            <div className={subConColClassName}>
+                <Button className={subConBtnClassName} title='play' name='play' onClick={onClick}>
+                    <PlayIcon />
+                </Button>
+            </div>
+            <div className={subConColClassName}>
+                <Button className={subConBtnClassName} name='forward' title='forward' onClick={onClick}>
+                    <ForwardIcon />
+                </Button>
+            </div>
         </div>
     );
 }

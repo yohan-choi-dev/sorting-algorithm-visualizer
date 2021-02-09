@@ -1,36 +1,36 @@
+@use '../../../../styles/abstracts/variables' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+@use '../../../../styles/base/animation';
+
 .sub-controller {
     position: absolute;
+    z-index: 10;
     width: 100%;
-    height: 100%;
-    z-index: 999;
-    height: 500px;
+    height: inherit;
     display: flex;
     flex-direction: row;
     justify-content: stretch;
     align-items: center;
-    text-align: center;
-    color: rgba(255, 255, 255, 0);
-    transition: all 0.5s;
-}
+    animation: color-animation 20s infinite;
 
-.sub-controller-button {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0);
-    background-color: rgba(255, 255, 255, 0);
-    border: 1px rgba(255, 255, 255, 0) solid;
-    font-size: 3rem;
-    transition: all 0.5s;
-}
+    &__column {
+        width: 33.3%;
+        height: inherit;
+        &--activated {
+            color: $color-white-transparent-1;
+            background-color: $color-white-transparent-2;
+            border: 1px solid $color-white-transparent-2;
+            transition: all 0.3s;
+        }
+        &--deactivated {
+            color: $color-white-transparent-3;
+            background-color: $color-white-transparent-3;
+            border: 1px solid $color-white-transparent-3;
+            transition: all 3s;
 
-.sub-controller-button:link,
-.sub-controller-button:visited {
-    width: 33.3%;
-    height: inherit;
-    text-decoration: none;
-    color: inherit;
+            @include respond(mobile-largest) {
+                transition: all 0.4s;
+            }
+        }
+    }
 }
