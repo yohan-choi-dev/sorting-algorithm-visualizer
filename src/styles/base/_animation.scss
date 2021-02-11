@@ -95,3 +95,13 @@
         background-color: rgba(255, 0, 0, 0.1);
     }
 }
+
+@keyframes rotateX {
+    0% {
+        transform: rotateX(0deg);
+    }
+
+    100% {
+        transform: rotateX(360deg);
+    }
+}
