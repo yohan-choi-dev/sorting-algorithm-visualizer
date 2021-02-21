@@ -7,11 +7,15 @@ function ToggleButton({ className, name, onClick }) {
     const [isButtonPaused, setButtonStatus] = useState(false);
     async function toggleButton(event) {
         onClick(event);
-        setButtonStatus((prev) => setButtonStatus(!prev));
+        setButtonStatus((prev) => !prev);
     }
 
     return (
-        <Button className={className} name={name} title={isButtonPaused ? 'pause' : 'play'} onClick={toggleButton}>
+        <Button
+            className={className}
+            name={name}
+            title={isButtonPaused ? 'pause' : 'play'}
+            onClick={toggleButton}>
             {isButtonPaused ? <PauseIcon /> : <PlayIcon />}
         </Button>
     );
