@@ -15,7 +15,7 @@ function Configurator({ onClick, onInput }) {
     }
 
     function togglePanel() {
-        setPanelStatus((previous) => setPanelStatus(!previous));
+        setPanelStatus((previous) => !previous);
     }
 
     return (
