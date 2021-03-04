@@ -1,139 +1,142 @@
+/* Utility */
 import { delay } from '../../../../utils';
-/* 
-    Animation 
+/* Default Configuration */
+import { defaultConfig } from '../../../../config';
+
+const defaultValues = {
+  configuration: {
+    animationSpeed: defaultConfig.animationSpeed,
+    animationColors: defaultConfig.animationColors,
+  },
+};
+
+/*
+    Animation
 
 */
+
 export default class Animation {
-    constructor(
-        targets,
-        config = {
-            animationSpeed: 1,
-            animationColors: [
-                'linear-gradient(to bottom, #474e53, #596268)',
+  constructor(targets = null, config = defaultValues.configuration) {
+    this.config = config;
+    this.targets = targets;
+    this.frames = [];
+    this.undoStack = [];
+    this.framePointer = 0;
+    this.animation = this.generateAnimation();
+    this.isPlayingAnimation = false;
 
-                'linear-gradient(to bottom, #eeee00, #fffc00)',
+    // Bind Methods
+    this.animation.next = this.animation.next.bind(this.animation);
+  }
 
-                'linear-gradient(to bottom, #93291E, #ED213A)',
+  setTargets = (targets) => {
+    this.targets = targets;
+  };
 
-                'linear-gradient(to bottom, #667db6, #0082c8)',
-            ],
-        }
-    ) {
-        this.targets = targets;
-        this.config = config;
-        this.frames = [];
-        this.framePointer = 0;
-        this.undoStack = [];
-        this.isPlayingAnimation = false;
-        this.animation = this.generateAnimation();
+  addFrame = (effects = []) => {
+    this.frames.push(effects);
+  };
 
-        this.play = this.play.bind(this);
-        this.pause = this.pause.bind(this);
-        this.forward = this.forward.bind(this);
-        this.backward = this.backward.bind(this);
-        this.animation.next = this.animation.next.bind(this.animation);
+  addAnimationEffect = (...effect) => {
+    const top = this.frames.length - 1;
+    this.frames[top].push(effect);
+  };
+
+  updateAnimationEffect = (target, effect) => {
+    try {
+      const [index, value, color] = effect;
+      if (index === null || index === undefined) {
+        throw new Error('index is not provided!');
+      }
+
+      target.index = index;
+
+      if (value !== null) {
+        target.innerText = value.toString();
+        target.style.height = `${(value / 300) * 80}%`;
+      }
+
+      if (color !== null) {
+        target.style.background = this.config.animationColors[color];
+      }
+    } catch (error) {
+      console.error(error);
     }
-    addFrame(effects = []) {
-        this.frames.push(effects);
+  };
+
+  copyAnimationEffect = (target) => {
+    if (target) {
+      return {
+        target,
+        innerText: target?.innerText,
+        height: target?.style?.height,
+        background: target?.style?.background,
+      };
     }
+  };
 
-    addAnimeEffect(...effect) {
-        const top = this.frames.length - 1;
-        this.frames[top].push(effect);
+  preserveAnimationEffects = (effects) => {
+    this.undoStack.push(effects);
+  };
+
+  revertAnimationEffect = (preservedEffects) => {
+    preservedEffects.forEach(({ target, innerText, height, background }) => {
+      target.innerText = innerText;
+      target.style.height = height;
+      target.style.background = background;
+    });
+  };
+
+  applyAnimationEffects = (newEffects) => {
+    const previousEffects = [];
+    newEffects.forEach((effect) => {
+      const [index] = effect;
+      const target = this.targets[index];
+      previousEffects.push(this.copyAnimationEffect(target));
+      this.updateAnimationEffect(target, effect);
+    });
+    this.preserveAnimationEffects(previousEffects.reverse());
+  };
+
+  animationEnds = () => this.framePointer >= this.frames.length;
+
+  *generateAnimation() {
+    while (true) {
+      yield this.framePointer;
+      if (!this.animationEnds()) {
+        this.applyAnimationEffects(this.frames[this.framePointer]);
+        this.framePointer++;
+      }
     }
+  }
 
-    updateAnimeEffect(target, effect) {
-        try {
-            const [index, value, color] = effect;
-            if (index === null || index === undefined) {
-                throw new Error('index is not provided!');
-            }
+  getAnimationStatus = () =>
+    !this.animationEnds() && this.isPlayingAnimation && !this.animationEnds();
 
-            target.index = index;
-
-            if (value !== null) {
-                target.innerText = value.toString();
-                target.style.height = (value / 300) * 80 + '%';
-            }
-
-            if (color !== null) {
-                target.style.background = this.config.animationColors[color];
-            }
-        } catch (error) {
-            console.error(error);
-        }
+  play = async () => {
+    if (this.isPlayingAnimation) {
+      return this.pause();
     }
-
-    copyAnimeEffect(target) {
-        if (target) {
-            return {
-                target: target,
-                innerText: target?.innerText,
-                height: target?.style?.height,
-                background: target?.style?.background,
-            };
-        }
+    this.isPlayingAnimation = true;
+    while (!this.animationEnds() && this.isPlayingAnimation) {
+      await delay(this.config.animationSpeed).then(this.animation.next);
     }
+  };
 
-    preserveAnimeEffects(effects) {
-        this.undoStack.push(effects);
+  pause = () => {
+    this.isPlayingAnimation = false;
+  };
+
+  forward = () => {
+    this.pause();
+    this.animation.next();
+  };
+
+  backward = () => {
+    this.pause();
+    if (this.undoStack.length > 0) {
+      this.revertAnimationEffect(this.undoStack.pop());
+      this.framePointer--;
     }
-
-    revertAnimeEffect(preservedEffects) {
-        preservedEffects.forEach(({ target, innerText, height, background }) => {
-            target.innerText = innerText;
-            target.style.height = height;
-            target.style.background = background;
-        });
-    }
-
-    applyAnimeEffects(newEffects) {
-        const previousEffects = [];
-        newEffects.forEach((effect) => {
-            const [index] = effect;
-            const target = this.targets[index];
-            previousEffects.push(this.copyAnimeEffect(target));
-            this.updateAnimeEffect(target, effect);
-        });
-        this.preserveAnimeEffects(previousEffects.reverse());
-    }
-
-    animationEnds() {
-        return this.framePointer >= this.frames.length;
-    }
-
-    *generateAnimation() {
-        while (true) {
-            yield this.framePointer;
-            if (!this.animationEnds()) {
-                this.applyAnimeEffects(this.frames[this.framePointer]);
-                this.framePointer++;
-            }
-        }
-    }
-
-    async play() {
-        this.isPlayingAnimation = !this.isPlayingAnimation;
-
-        while (!this.animationEnds() && this.isPlayingAnimation) {
-            await delay(this.config.animationSpeed).then(this.animation.next);
-        }
-    }
-
-    pause() {
-        this.isPlayingAnimation = false;
-    }
-
-    forward() {
-        this.pause();
-        this.animation.next();
-    }
-
-    backward() {
-        this.pause();
-        if (this.undoStack.length > 0) {
-            this.revertAnimeEffect(this.undoStack.pop());
-            this.framePointer--;
-        }
-    }
+  };
 }

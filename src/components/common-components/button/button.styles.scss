@@ -44,6 +44,33 @@
             transform: scale(1);
         }
     }
+
+    &--selected {
+        color: $color-primary;
+        background-color: $color-accent;
+        transform: scale(1.1);
+
+        &::before {
+            display: inline-block;
+            animation: rotateX 1s infinite;
+            content: '> ';
+            font-weight: bold;
+        }
+
+        &::after {
+            content: '!';
+            font-weight: bold;
+        }
+
+        @include respond(mobile-medium) {
+            width: 100%;
+            transition: all ease-out 0.5s;
+            &:hover,
+            &:active {
+                transform: scale(1);
+            }
+        }
+    }
 }
 
 .close-button {

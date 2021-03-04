@@ -1,7 +1,6 @@
-export { Bar } from './bar';
+export { Item } from './item';
 export { ToggleButton } from './toggle-button';
-export { Display } from './display';
-export { ItemList } from './item-list';
+export { Scene } from './scene';
 export { Configurator } from './configurator';
 export { MainController } from './main-controller';
 export { SubController } from './sub-controller';

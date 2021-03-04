@@ -1,9 +1,10 @@
-import { Homepage } from '../homepage';
+import { Layout } from '../layout';
+import { Visualizer } from '../visualizer';
 
 export default function App() {
-    return (
-        <div className='app'>
-            <Homepage></Homepage>
-        </div>
-    );
+  return (
+    <Layout>
+      <Visualizer></Visualizer>
+    </Layout>
+  );
 }

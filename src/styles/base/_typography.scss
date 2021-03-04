@@ -58,6 +58,22 @@ body {
     }
 }
 
+.sorting-algorithm-name {
+    position: absolute;
+    // z-index: 100;
+    top: 15%;
+    width: 20rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    line-height: 1.4;
+    animation: bounce-from-up ease-in 2s;
+
+    &-space {
+        margin-bottom: 4rem;
+    }
+}
+
 .sub-title {
     animation: bounce-from-down 1.6s ease-out 0.32s;
 }

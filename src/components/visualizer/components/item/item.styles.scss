@@ -1,6 +1,6 @@
-.bar {
+.item {
     flex-basis: auto;
-    color: white;
+    color: var(--color-white);
     text-align: center;
     transition: all 0.1s;
     background: linear-gradient(to bottom, #2c3e50, #bdc3c7);
