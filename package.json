@@ -22,7 +22,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "pretty": "prettier --write \"./**/*.{js,jsx,json}\"",
-    "deploy": "react-scripts build && cp -R ./build/* /var/www/save.yohan-choi.com/html/;"
+    "deploy": "react-scripts build && cp -R ./build/* /var/www/sav.yohan-choi.com/html/;"
   },
   "eslintConfig": {
     "extends": [
