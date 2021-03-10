@@ -1,15 +1,20 @@
+/* React */
 import { useState, useEffect, useRef } from 'react';
 import { useEventListner } from './hooks';
 
-import { defaultConfig } from '../../config';
-import { Keys } from './enums';
-
+/* Utiities */
 import { sortingAlgorithms, Animation } from './utils/';
 import { delay, getRandomArray } from '../../utils';
 
+/* Styles */
 import './visualizer.styles.scss';
 
+/* Components */
 import { Configurator, Item, Scene, SubController } from './components/';
+
+/* Global Variables */
+import { defaultConfig } from '../../config';
+import { Keys } from './enums';
 
 const ALGORITHM_EVENTS = Object.freeze([
   'bubbleSort',
@@ -29,6 +34,7 @@ const ALGORITHM_NAMES = {
 
 const CONTROLLER_EVENTS = Object.freeze(['play', 'backward', 'forward', 'pause', 'reset']);
 
+/* Visulizer is the core component of the application */
 function Visualizer() {
   const [array, setArray] = useState(getRandomArray(25, 1, 300));
   const [isPlayingAnimation, setAnimationPlayingStatus] = useState(false);
