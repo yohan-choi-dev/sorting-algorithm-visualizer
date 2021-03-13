@@ -10,13 +10,8 @@ const defaultValues = {
   },
 };
 
-/*
-    Animation
-
-*/
-
 export default class Animation {
-  constructor(targets = null, config = defaultValues.configuration) {
+  constructor(config = defaultValues.configuration, targets = []) {
     this.config = config;
     this.targets = targets;
     this.frames = [];
@@ -29,8 +24,44 @@ export default class Animation {
     this.animation.next = this.animation.next.bind(this.animation);
   }
 
+  setTargetsColorAsDefault = () => {
+    const targets = [...this.targets];
+    targets.forEach((target) => {
+      target.style.background = this.config.animationColors[0];
+    });
+  };
+
+  clear = () => {
+    this.isPlayingAnimation = false;
+    this.frames = [];
+    this.framePointer = 0;
+    this.undoStack = [];
+    console.log('clear clicked');
+    this.setTargetsColorAsDefault();
+  };
+
   setTargets = (targets) => {
     this.targets = targets;
+  };
+
+  set accessorTargets(targets) {
+    try {
+      if (typeof targets !== 'object') {
+        throw new Error('Targets is not an object!');
+      }
+
+      this.targets = targets;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  set accessorConfig({ animationSpeed, animationColors }) {
+    this.config = { animationSpeed, animationColors };
+  }
+
+  setConfig = (config) => {
+    this.config = config;
   };
 
   addFrame = (effects = []) => {
@@ -41,6 +72,8 @@ export default class Animation {
     const top = this.frames.length - 1;
     this.frames[top].push(effect);
   };
+
+  clearAnimation = () => {};
 
   updateAnimationEffect = (target, effect) => {
     try {
@@ -114,9 +147,6 @@ export default class Animation {
     !this.animationEnds() && this.isPlayingAnimation && !this.animationEnds();
 
   play = async () => {
-    if (this.isPlayingAnimation) {
-      return this.pause();
-    }
     this.isPlayingAnimation = true;
     while (!this.animationEnds() && this.isPlayingAnimation) {
       await delay(this.config.animationSpeed).then(this.animation.next);
@@ -128,12 +158,12 @@ export default class Animation {
   };
 
   forward = () => {
-    this.pause();
+    this.isPlayingAnimation = false;
     this.animation.next();
   };
 
   backward = () => {
-    this.pause();
+    this.isPlayingAnimation = false;
     if (this.undoStack.length > 0) {
       this.revertAnimationEffect(this.undoStack.pop());
       this.framePointer--;
