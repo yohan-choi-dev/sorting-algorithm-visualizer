@@ -2,7 +2,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useEventListner } from './hooks';
 
-/* Utiities */
+/* Redux */
+import { useSelector, useDispatch } from 'react-redux';
+import { pause, selectPlayer } from '../../redux/player-slice';
+import { selectAlgorithm } from '../../redux/algorithm-slice';
+
+/* Utilities */
 import { sortingAlgorithms, Animation } from './utils/';
 import { delay, getRandomArray } from '../../utils';
 
@@ -16,31 +21,21 @@ import { Configurator, Item, Scene, SubController } from './components/';
 import { defaultConfig } from '../../config';
 import { Keys } from './enums';
 
-const ALGORITHM_EVENTS = Object.freeze([
-  'bubbleSort',
-  'selectionSort',
-  'insertionSort',
-  'mergeSort',
-  'quickSort',
-]);
-
-const ALGORITHM_NAMES = {
-  bubbleSort: 'Bubble Sort',
-  selectionSort: 'Selection Sort',
-  insertionSort: 'Insertion Sort',
-  mergeSort: 'Merge Sort',
-  quickSort: 'Quick Sort',
-};
-
 const CONTROLLER_EVENTS = Object.freeze(['play', 'backward', 'forward', 'pause', 'reset']);
+
+const CONFIGURATION_EVENTS = Object.freeze(['array', 'animationSpeed']);
 
 /* Visulizer is the core component of the application */
 function Visualizer() {
   const [array, setArray] = useState(getRandomArray(25, 1, 300));
-  const [isPlayingAnimation, setAnimationPlayingStatus] = useState(false);
   const [config, setConfig] = useState(defaultConfig);
-  const animationRef = useRef(null);
-  const items = document.getElementsByClassName('item');
+
+  const animationRef = useRef(new Animation());
+
+  const algorithm = useSelector(selectAlgorithm);
+
+  const player = useSelector(selectPlayer);
+  const dispatch = useDispatch();
 
   const listItems = array.map((value, index, array) => {
     const numberOfItems = array.length;
@@ -60,45 +55,49 @@ function Visualizer() {
   useEventListner('keydown', handleKeyDown);
 
   useEffect(() => {
-    animationRef.current = new Animation(items, config);
-
-    return () => (animationRef.current = null);
-  }, [config, items]);
+    const items = document.getElementsByClassName('item');
+    animationRef.current.accessorConfig = config;
+    animationRef.current.accessorTargets = items;
+  }, [config]);
 
   async function initAnimation() {
     if (!animationRef.current.frames.length) {
       const clonedArray = [...array];
-      config.sortingAlgorithm(clonedArray, animationRef.current);
+      const sortingAlgorithm = sortingAlgorithms[algorithm];
+      sortingAlgorithm(clonedArray, animationRef.current);
     }
   }
 
   async function resetAnimation() {
-    if (animationRef.current) {
-      animationRef.current.pause();
-      await delay(config.animationSpeed);
+    try {
+      dispatch(pause());
+      if (animationRef.current) {
+        animationRef.current.pause();
+        await delay(config.animationSpeed);
+      }
+      animationRef.current.clear();
+
+      setArray(getRandomArray(array.length, 1, 300));
+    } catch (error) {
+      console.error(error);
     }
-    setAnimationPlayingStatus(false);
-    setArray([]);
-    setArray(getRandomArray(array.length, 1, 300));
   }
 
   function animationPlayer(name) {
     try {
-      if (!config.sortingAlgorithm) {
-        throw new Error('Sorting algorithm is not selected! Please select algorithm.');
-      }
-
       initAnimation();
       const playAnimation = () => {
-        const isPlaying = animationRef.current.getAnimationStatus();
-        animationRef.current?.play();
-        setAnimationPlayingStatus(isPlaying);
+        if (player) {
+          animationRef.current.pause();
+        } else {
+          animationRef.current.play();
+        }
       };
 
       const controller = {
         play: playAnimation,
-        backward: animationRef.current?.backward,
-        forward: animationRef.current?.forward,
+        backward: animationRef.current.backward,
+        forward: animationRef.current.forward,
         pause: playAnimation,
         reset: resetAnimation,
       };
@@ -111,18 +110,6 @@ function Visualizer() {
     }
   }
 
-  async function selectAlgorithm(name) {
-    await resetAnimation();
-
-    if (sortingAlgorithms[name]) {
-      setConfig((previous) => ({
-        ...previous,
-        sortingAlgorithm: sortingAlgorithms[name],
-        sortingAlgorithmName: ALGORITHM_NAMES[name],
-      }));
-    }
-  }
-
   async function generateArray(value) {
     if (value > array.length + 10 || value < array.length - 10) {
       await resetAnimation();
@@ -130,7 +117,7 @@ function Visualizer() {
     }
   }
 
-  function handleInput({ target: { name, value } }) {
+  function updateConfiguration({ target: { name, value } }) {
     if (name === 'array') {
       return generateArray(value);
     }
@@ -144,65 +131,47 @@ function Visualizer() {
     }
   }
 
-  function handleClick(event) {
+  function handleEvent(event) {
     event.preventDefault();
     const { name } = event.currentTarget;
-
-    if (ALGORITHM_EVENTS.includes(name)) {
-      return selectAlgorithm(name);
-    }
 
     if (CONTROLLER_EVENTS.includes(name)) {
       return animationPlayer(name);
     }
-  }
 
-  function handleChange(event) {
-    event.preventDefault();
-    const { name } = event.currentTarget;
-
-    if (ALGORITHM_EVENTS.includes(name)) {
-      return selectAlgorithm(name);
-    }
-
-    if (CONTROLLER_EVENTS.includes(name)) {
-      return animationPlayer(name);
+    if (CONFIGURATION_EVENTS.includes(name)) {
+      return updateConfiguration(event);
     }
   }
 
-  function handleKeyDown({ keyCode }) {
+  function handleKeyDown(event) {
+    const keyCode = event.keyCode;
+
     switch (keyCode) {
       case Keys.SPACEBAR:
         animationPlayer('play');
-        break;
+        return;
       case Keys.LEFT:
         animationPlayer('backward');
-        break;
+        return;
       case Keys.RIGHT:
         animationPlayer('forward');
-        break;
+        return;
       default:
-        break;
+        return;
     }
   }
 
   return (
     <div className='visualizer'>
       <Scene>
-        <SubController
-          isPlayingAnimation={isPlayingAnimation}
-          onClick={handleClick}
-          onChange={handleChange}
-        />
+        <SubController onEvent={handleEvent} />
         {listItems}
       </Scene>
       <Configurator
-        isPlayingAnimation={isPlayingAnimation}
         arraySize={array.length}
         animationSpeed={100 - config.animationSpeed}
-        onClick={handleClick}
-        onChange={handleChange}
-        onInput={handleInput}
+        onEvent={handleEvent}
       />
     </div>
   );

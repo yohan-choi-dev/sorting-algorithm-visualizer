@@ -1,29 +1,28 @@
-import './configurator.styles.scss';
-
+/* React */
 import { useState } from 'react';
+
+/* Redux */
+import { useSelector, useDispatch } from 'react-redux';
+import { selection, selectAlgorithm } from '../../../../redux/algorithm-slice';
+
+/* Styles */
+import './configurator.styles.scss';
 
 import { Button, Slider } from '../../../common-components/';
 import { MainController } from '../main-controller';
 
-function Configurator({
-  arraySize,
-  animationSpeed,
-  isPlayingAnimation,
-  onClick,
-  onChange,
-  onInput,
-}) {
+function Configurator({ arraySize, animationSpeed, isPlayingAnimation, onEvent }) {
   const [isPanelOpen, setPanelStatus] = useState(true);
-  const [inputValue, setInputValue] = useState('');
+  const algorithm = useSelector(selectAlgorithm);
+  const dispatch = useDispatch();
 
   function togglePanel() {
     setPanelStatus((previous) => !previous);
   }
 
-  function handleInputChange(event) {
+  function handleChange(event) {
     const value = event.target.value;
-    setInputValue(value);
-    onChange(event);
+    dispatch(selection(value));
   }
 
   return (
@@ -41,8 +40,8 @@ function Configurator({
             value='bubbleSort'
             title='Bubble Sort'
             className='menu__input'
-            checked={inputValue === 'bubbleSort'}
-            onChange={handleInputChange}
+            checked={algorithm === 'bubbleSort'}
+            onChange={handleChange}
           />
           <label htmlFor='menu-button-1' className='menu__option'>
             Bubble Sort
@@ -54,8 +53,8 @@ function Configurator({
             value='selectionSort'
             title='Selection Sort'
             className='menu__input'
-            checked={inputValue === 'selectionSort'}
-            onChange={handleInputChange}
+            checked={algorithm === 'selectionSort'}
+            onChange={handleChange}
           />
           <label htmlFor='menu-button-2' className='menu__option'>
             Selection Sort
@@ -67,8 +66,8 @@ function Configurator({
             value='insertionSort'
             title='Insertion Sort'
             className='menu__input'
-            checked={inputValue === 'insertionSort'}
-            onChange={handleInputChange}
+            checked={algorithm === 'insertionSort'}
+            onChange={handleChange}
           />
           <label htmlFor='menu-button-3' className='menu__option'>
             Insertion Sort
@@ -80,8 +79,8 @@ function Configurator({
             value='mergeSort'
             title='Merge Sort'
             className='menu__input'
-            checked={inputValue === 'mergeSort'}
-            onChange={handleInputChange}
+            checked={algorithm === 'mergeSort'}
+            onChange={handleChange}
           />
           <label htmlFor='menu-button-4' className='menu__option'>
             Merge Sort
@@ -93,8 +92,8 @@ function Configurator({
             value='quickSort'
             title='Quick Sort'
             className='menu__input'
-            checked={inputValue === 'quickSort'}
-            onChange={handleInputChange}
+            checked={algorithm === 'quickSort'}
+            onChange={handleChange}
           />
           <label htmlFor='menu-button-5' className='menu__option'>
             Quick Sort
@@ -108,7 +107,7 @@ function Configurator({
               min={20}
               max={400}
               value={arraySize}
-              onInput={onInput}>
+              onInput={onEvent}>
               Array Size
             </Slider>
             <Slider
@@ -118,7 +117,7 @@ function Configurator({
               min={1}
               max={100}
               value={animationSpeed}
-              onInput={onInput}>
+              onInput={onEvent}>
               Animation Speed
             </Slider>
           </div>
@@ -130,7 +129,7 @@ function Configurator({
       <MainController
         togglePanel={togglePanel}
         isPlayingAnimation={isPlayingAnimation}
-        onClick={onClick}></MainController>
+        onClick={onEvent}></MainController>
     </div>
   );
 }

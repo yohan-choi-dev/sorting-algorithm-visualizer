@@ -6,7 +6,7 @@ import { delay } from '../../../../utils';
 import { ToggleButton } from '../toggle-button';
 import { Button, BackwardIcon, ForwardIcon } from '../../../common-components/';
 
-function SubController({ isPlayingAnimation, onClick }) {
+function SubController({ isPlayingAnimation, onEvent }) {
   const [isWorking, setWorkingStatus] = useState(false);
   const modifier = isWorking ? 'activated' : 'deactivated';
   const subConColClassName = 'sub-controller__column';
@@ -23,7 +23,7 @@ function SubController({ isPlayingAnimation, onClick }) {
   return (
     <div className='sub-controller' onMouseOver={handleMouseOver}>
       <div className={subConColClassName}>
-        <Button className={subConBtnClassName} name='backward' title='backward' onClick={onClick}>
+        <Button className={subConBtnClassName} name='backward' title='backward' onClick={onEvent}>
           <BackwardIcon />
         </Button>
       </div>
@@ -31,10 +31,10 @@ function SubController({ isPlayingAnimation, onClick }) {
         <ToggleButton
           className={subConBtnClassName}
           isPlayingAnimation={isPlayingAnimation}
-          onClick={onClick}></ToggleButton>
+          onClick={onEvent}></ToggleButton>
       </div>
       <div className={subConColClassName}>
-        <Button className={subConBtnClassName} name='forward' title='forward' onClick={onClick}>
+        <Button className={subConBtnClassName} name='forward' title='forward' onClick={onEvent}>
           <ForwardIcon />
         </Button>
       </div>
