@@ -1,12 +1,32 @@
+/* Redux */
+import { useSelector, useDispatch } from 'react-redux';
+import { pause, play, selectPlayer } from '../../../../redux/player-slice.js';
+
 import { Button } from '../../../common-components';
 import { PlayIcon, PauseIcon } from '../../../common-components';
 
-function ToggleButton({ isPlayingAnimation = false, className, onClick }) {
-  const name = isPlayingAnimation ? 'pause' : 'play';
+function ToggleButton({ className, onClick }) {
+  const player = useSelector(selectPlayer);
+  const dispatch = useDispatch();
 
-  return (
-    <Button className={className} name={name} title={name} onClick={onClick}>
-      {isPlayingAnimation ? <PauseIcon /> : <PlayIcon />}
+  function handleClick(event) {
+    const name = event.currentTarget.name;
+    if (name === 'pause') {
+      dispatch(pause());
+    } else if (name === 'play') {
+      dispatch(play());
+    }
+    console.log('toggle', player);
+    onClick(event);
+  }
+
+  return player ? (
+    <Button className={className} name='pause' title='pause' onClick={handleClick}>
+      <PauseIcon />
+    </Button>
+  ) : (
+    <Button className={className} name='play' title='play' onClick={handleClick}>
+      <PlayIcon />
     </Button>
   );
 }
